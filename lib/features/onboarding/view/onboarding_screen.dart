@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/constants/app_assets.dart';
+import '../../../core/routes/app_routes.dart';
 import '../view_model/onboarding_view_model.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -28,7 +29,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   void _onFinish() {
-    // TODO: Navigate to Home/Login
+    Navigator.pushReplacementNamed(context, Routes.loginRoute);
   }
 
   @override

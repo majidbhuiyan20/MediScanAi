@@ -8,7 +8,7 @@ class AppStrings {
       "Upload your lab reports, X-rays, or prescriptions and get clear AI-powered insights in seconds—no medical confusion anymore.";
 
   // Onboarding Screen 2
-  static const String onboardingTitle2 = "Powered by Medical AI Intelligence";
+  static const String onboardingTitle2 = "Powered by MediScan AI Intelligence";
   static const String onboardingDescription2 =
       "Our AI analyzes complex reports and explains results in simple human language, highlighting what matters most.";
 
