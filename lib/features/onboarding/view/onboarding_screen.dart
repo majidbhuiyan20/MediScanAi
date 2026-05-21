@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
+import '../../../core/constants/app_assets.dart';
 import '../view_model/onboarding_view_model.dart';
 
 class OnboardingScreen extends ConsumerStatefulWidget {
@@ -26,6 +27,10 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
     super.dispose();
   }
 
+  void _onFinish() {
+    // TODO: Navigate to Home/Login
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(onboardingProvider);
@@ -35,138 +40,220 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
       OnboardingContent(
         title: AppStrings.onboardingTitle1,
         description: AppStrings.onboardingDescription1,
-        icon: Icons.document_scanner_outlined,
+        image: AppAssets.onboarding1,
       ),
       OnboardingContent(
         title: AppStrings.onboardingTitle2,
         description: AppStrings.onboardingDescription2,
-        icon: Icons.psychology_outlined,
+        image: AppAssets.onboarding2,
       ),
       OnboardingContent(
         title: AppStrings.onboardingTitle3,
         description: AppStrings.onboardingDescription3,
-        icon: Icons.health_and_safety_outlined,
+        image: AppAssets.onboarding3,
       ),
     ];
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView.builder(
-                controller: _pageController,
-                itemCount: contents.length,
-                onPageChanged: viewModel.onPageChanged,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(40.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          height: 300,
-                          width: double.infinity,
+      backgroundColor: AppColors.background,
+      body: Stack(
+        children: [
+          // Premium Background Gradient/Shapes
+          Positioned(
+            top: -50,
+            left: -50,
+            child: CircleAvatar(
+              radius: 120,
+              backgroundColor: AppColors.primary.withOpacity(0.07),
+            ),
+          ),
+          Positioned(
+            bottom: 100,
+            right: -80,
+            child: CircleAvatar(
+              radius: 140,
+              backgroundColor: AppColors.secondary.withOpacity(0.05),
+            ),
+          ),
+
+          SafeArea(
+            child: Column(
+              children: [
+                // Top Bar: Skip Button
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: _onFinish,
+                        style: TextButton.styleFrom(
+                          foregroundColor: AppColors.textSecondary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: const Text(
+                          "Skip",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Expanded(
+                  child: PageView.builder(
+                    controller: _pageController,
+                    itemCount: contents.length,
+                    onPageChanged: viewModel.onPageChanged,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Premium Image Card
+                            AnimatedContainer(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeOutCubic,
+                              height: MediaQuery.of(context).size.height * 0.35,
+                              width: double.infinity,
+                              padding: const EdgeInsets.all(20),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(40),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.primary.withOpacity(0.08),
+                                    blurRadius: 40,
+                                    offset: const Offset(0, 20),
+                                  ),
+                                ],
+                              ),
+                              child: Image.asset(
+                                contents[index].image,
+                                fit: BoxFit.contain,
+                              ),
+                            ),
+                            const SizedBox(height: 60),
+                            
+                            // Content with AnimatedSwitcher for smooth text transitions
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 400),
+                              child: Column(
+                                key: ValueKey<int>(index),
+                                children: [
+                                  Text(
+                                    contents[index].title,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w900,
+                                      color: AppColors.textPrimary,
+                                      letterSpacing: -0.5,
+                                      height: 1.2,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    contents[index].description,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.textSecondary,
+                                      height: 1.6,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+                // Bottom Navigation Section
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(30, 0, 30, 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Page Indicator
+                      Row(
+                        children: List.generate(
+                          contents.length,
+                          (index) => buildDot(index, state.currentIndex),
+                        ),
+                      ),
+
+                      // Circular Next Button with Gradient
+                      GestureDetector(
+                        onTap: () {
+                          if (state.currentIndex == contents.length - 1) {
+                            _onFinish();
+                          } else {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 600),
+                              curve: Curves.easeOutQuart,
+                            );
+                          }
+                        },
+                        child: Container(
+                          width: 70,
+                          height: 70,
                           decoration: BoxDecoration(
-                            color: AppColors.primary.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(30),
+                            shape: BoxShape.circle,
+                            gradient: const LinearGradient(
+                              colors: [AppColors.primary, AppColors.secondary],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.primary.withOpacity(0.4),
+                                blurRadius: 15,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
                           ),
                           child: Icon(
-                            contents[index].icon,
-                            size: 120,
-                            color: AppColors.primary,
+                            state.currentIndex == contents.length - 1
+                                ? Icons.check
+                                : Icons.arrow_forward_ios_rounded,
+                            color: Colors.white,
+                            size: 28,
                           ),
-                        ),
-                        const SizedBox(height: 40),
-                        Text(
-                          contents[index].title,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          contents[index].description,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: AppColors.textSecondary,
-                            height: 1.5,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      contents.length,
-                      (index) => buildDot(index, state.currentIndex),
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (state.currentIndex == contents.length - 1) {
-                          // TODO: Navigate to Login/Signup
-                        } else {
-                          _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      child: Text(
-                        state.currentIndex == contents.length - 1
-                            ? AppStrings.getStarted
-                            : "Next",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
   Widget buildDot(int index, int currentIndex) {
+    bool isActive = currentIndex == index;
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 300),
       margin: const EdgeInsets.only(right: 8),
       height: 8,
-      width: currentIndex == index ? 24 : 8,
+      width: isActive ? 30 : 8,
       decoration: BoxDecoration(
-        color: currentIndex == index ? AppColors.primary : AppColors.primary.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(4),
+        color: isActive ? AppColors.primary : AppColors.primary.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(10),
       ),
     );
   }
@@ -175,12 +262,11 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
 class OnboardingContent {
   final String title;
   final String description;
-  final IconData icon;
+  final String image;
 
   OnboardingContent({
     required this.title,
     required this.description,
-    required this.icon,
+    required this.image,
   });
 }
-
