@@ -29,7 +29,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   }
 
   void _onFinish() {
-    Navigator.pushReplacementNamed(context, Routes.loginRoute);
+    Navigator.pushReplacementNamed(context, Routes.mainRoute);
   }
 
   @override
