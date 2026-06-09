@@ -14,8 +14,7 @@ class PremiumBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(24, 0, 24, 34),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      margin: const EdgeInsets.fromLTRB(24, 0, 24, 34), padding: const EdgeInsets.symmetric(horizontal: 12),
       height: 70,
       decoration: BoxDecoration(
         color: Colors.white,

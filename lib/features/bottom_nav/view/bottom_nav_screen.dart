@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../home/home_screen.dart';
+import '../../home/view/home_screen.dart';
 import '../../history/history_screen.dart';
 import '../../profile/profile_screen.dart';
 import '../../report/report_screen.dart';
