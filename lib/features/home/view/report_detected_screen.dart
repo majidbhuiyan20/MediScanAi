@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mediscanai/core/routes/app_routes.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../widgets/primary_button.dart';
 
@@ -136,7 +137,7 @@ class _ReportDetectedScreenState extends State<ReportDetectedScreen> {
                       PrimaryButton(
                         text: "View Results",
                         onPressed: () {
-                          // Action here
+                          Navigator.pushNamed(context, Routes.viewReportScreen);
                         },
                         backgroundColor: AppColors.primary,
                       ),
