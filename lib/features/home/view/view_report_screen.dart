@@ -42,12 +42,11 @@ class ViewReportScreen extends ConsumerWidget {
           children: [
             // Premium Tab Selection Header
             Container(
-              color: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               child: Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: AppColors.appBackground,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Row(
@@ -79,33 +78,29 @@ class ViewReportScreen extends ConsumerWidget {
             Expanded(
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
+                layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
+                  return Stack(
+                    alignment: Alignment.topCenter,
+                    children: <Widget>[
+                      ...previousChildren,
+                      if (currentChild != null) currentChild,
+                    ],
+                  );
+                },
                 child: SingleChildScrollView(
                   key: ValueKey<int>(selectedTabIndex),
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.all(16.0),
-                  child: _buildSelectedContent(selectedTabIndex),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width,
+                    ),
+                    child: _buildSelectedContent(selectedTabIndex),
+                  ),
                 ),
               ),
             ),
           ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
-              blurRadius: 10,
-              offset: const Offset(0, -5),
-            ),
-          ],
-        ),
-        child: PrimaryButton(
-          text: "Download PDF Report",
-          icon: Icons.file_download_outlined,
-          onPressed: () {},
         ),
       ),
     );
