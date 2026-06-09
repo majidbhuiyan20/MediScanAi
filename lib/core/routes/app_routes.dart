@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mediscanai/features/home/view/upload_report_screen.dart';
 import '../../features/onboarding/view/onboarding_screen.dart';
 import '../../features/splash/splash_screen.dart';
 import '../../features/bottom_nav/view/bottom_nav_screen.dart';
@@ -9,6 +10,7 @@ class Routes {
   static const String onboardingRoute = "/onboarding";
   static const String mainRoute = "/main";
   static const String loginRoute = "/login"; // Placeholder for now
+  static const String uploadReportScreen = "/uploadReportScreen";
 }
 
 class RouteGenerator {
@@ -20,6 +22,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const OnboardingScreen());
       case Routes.mainRoute:
         return MaterialPageRoute(builder: (_) => const BottomNavScreen());
+      case Routes.uploadReportScreen:
+        return MaterialPageRoute(builder: (_) => const UploadReportScreen());
       default:
         return unDefineRoute();
     }

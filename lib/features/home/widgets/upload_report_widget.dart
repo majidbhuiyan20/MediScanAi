@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/routes/app_routes.dart';
 import '../../../core/widgets/primary_button.dart';
 import '../../widgets/dotted_border_painter.dart';
 class UploadReportWidget extends StatelessWidget {
@@ -57,7 +58,9 @@ class UploadReportWidget extends StatelessWidget {
             const SizedBox(height: 20),
             PrimaryButton(
               text: "Choose File",
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.uploadReportScreen);
+              },
               width: 150,
               isFullWidth: false,
               height: 50,
