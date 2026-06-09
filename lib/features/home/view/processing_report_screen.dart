@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mediscanai/core/routes/app_routes.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../widgets/ai_orbit_loader.dart';
@@ -12,6 +13,20 @@ class ProcessingReportScreen extends StatefulWidget {
 }
 
 class _ProcessingReportScreenState extends State<ProcessingReportScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToReportDetected();
+  }
+
+  void _navigateToReportDetected() async {
+    await Future.delayed(const Duration(seconds: 4));
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, Routes.reportDetectedScreen);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
