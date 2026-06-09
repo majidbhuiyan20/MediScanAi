@@ -3,6 +3,7 @@ import 'package:mediscanai/core/constants/app_colors.dart';
 import 'package:mediscanai/features/widgets/dotted_border_painter.dart';
 
 import '../../widgets/bullet_point.dart';
+import 'processing_report_screen.dart';
 
 class UploadReportScreen extends StatefulWidget {
   const UploadReportScreen({super.key});
@@ -12,6 +13,24 @@ class UploadReportScreen extends StatefulWidget {
 }
 
 class _UploadReportScreenState extends State<UploadReportScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToProcessing();
+  }
+
+  void _navigateToProcessing() async {
+    await Future.delayed(const Duration(seconds: 4));
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const ProcessingReportScreen(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
